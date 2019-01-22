@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>InhaalExamen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="./node_datetime.js"></script>
+    <script type="text/javascript">
+     document.getElementById('datum').value = date;
+      </script>
+
+  </head>
+  <!-- 3. Display the application -->
+  <body>
+    <my-app>InhaalExamens</my-app>
+    <form action="/add" method="post">
+        <label for="naam">Vul naam in: </label>
+        <input id="naam" type="text" name="naam">
+        <label for="examen">Vul examen in: </label>
+        <input id="examen" type="text" name="examen">
+        
+        <input hidden id="datum" name="datum">
+       
+        <label for="reden">Vul reden in: </label>
+        <input id="reden" type="text" name="reden">
+
+        <input type="submit" value="OK">
+    </form>
+   
+<form>
+    <form action="/get" method="post">
+        <label for="naam">Vul naam in: </label>
+        <input id="naam" type="text" name="naam">
+        <input type="submit" value="OK">
+    </form>
+
+</form>
+  </body>
+</html>

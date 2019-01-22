@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
+var path = require('path');
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const MongoClient = require('mongodb').MongoClient
-
+var date = Date.now();
 var db;
 
 //boilerplate code voor connectie te leggen met mongodb 
@@ -17,7 +18,14 @@ MongoClient.connect('mongodb://localhost:27017/examen', { useNewUrlParser: true 
     })
 })
 
-//voorziet binnen de appliactie de mogelijkheid om json files en urls in te lezen
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
+
+app.use(express.static(path.join(__dirname, 'client')));
+
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
@@ -39,13 +47,33 @@ app.use(cors(corsOptions));
 
 // Redirect to list
 app.get('/', (req, res) => {
-   res.redirect('/list');
+    res.sendFile(path.join(__dirname + '/views/index.html'));
 })
 
-// list all products van de mongoDb
+// list alle data van de mongoDb
 app.get('/list', (req, res) => {
     db.collection('inhaal').find().toArray((err, result) => {
       if (err) throw err
       res.json(result)
     })
   })
+
+  // Add a product to the db
+app.post('/add', (req, res) => {
+
+    db.collection('inhaal').insertOne(req.body, (err, result) => {
+       if (err) throw err
+       res.sendFile(path.join(__dirname + '/views/index.html'));
+    })
+  })
+// Find 1 examen
+app.post('/search', (req, res) => {
+    var query = { naam: req.body.naam }
+    db.collection('products').find(query).toArray(function(err, result) {
+      if (err) throw err
+      if (result == '')
+          res.json({})
+      else
+          res.json(result[0])
+    });
+   })
