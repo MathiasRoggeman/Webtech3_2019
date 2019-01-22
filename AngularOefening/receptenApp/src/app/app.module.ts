@@ -3,16 +3,24 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ReceptFormComponent } from './recept-form/recept-form.component';
+import { ReceptListComponent } from './recept-list/recept-list.component';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 @NgModule({
   declarations: [
     AppComponent,
     
-    ReceptFormComponent
+    ReceptFormComponent,
+    
+    ReceptListComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    LocalStorageModule.withConfig({
+      prefix: 'receptenApp',
+      storageType: 'localStorage'
+  })
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -7,12 +7,12 @@ const MongoClient = require('mongodb').MongoClient
 var date = Date.now();
 var db;
 
-//boilerplate code voor connectie te leggen met mongodb 
+
 MongoClient.connect('mongodb://localhost:27017/examen', { useNewUrlParser: true },
  (err, database) => {
     if (err) return console.log(err)
     db = database.db('examen')
-    //de express applicatie wordt gedeployed op poort 4000
+ 
     app.listen(process.env.PORT || 4000, () => {
       console.log('Listening on port 4000')
     })
@@ -45,12 +45,12 @@ var corsOptions = {
 //whitelist optie initialiseren in de applicatie
 app.use(cors(corsOptions));
 
-// Redirect to list
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/views/index.html'));
 })
 
-// list alle data van de mongoDb
+
 app.get('/list', (req, res) => {
     db.collection('inhaal').find().toArray((err, result) => {
       if (err) throw err
@@ -58,7 +58,7 @@ app.get('/list', (req, res) => {
     })
   })
 
-  // Add a product to the db
+
 app.post('/add', (req, res) => {
 
     db.collection('inhaal').insertOne(req.body, (err, result) => {
@@ -66,10 +66,10 @@ app.post('/add', (req, res) => {
        res.sendFile(path.join(__dirname + '/views/index.html'));
     })
   })
-// Find 1 examen
+
 app.post('/search', (req, res) => {
-    var query = { naam: req.body.naam }
-    db.collection('products').find(query).toArray(function(err, result) {
+    var query = {naam: req.body.naam}
+    db.collection('inhaal').find(query).toArray(function(err, result) {
       if (err) throw err
       if (result == '')
           res.json({})
